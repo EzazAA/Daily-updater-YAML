@@ -1,0 +1,33 @@
+name: Daily Commit
+
+on:
+  schedule:
+    # This cron syntax will run the workflow daily at 00:00 UTC
+    - cron: '0 0 * * *'
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9' # You can choose any version you need
+
+      - name: Generate file with date
+        run: |
+          echo "Last update: $(date)" > update.txt
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.email "your-email@example.com"
+          git config --global user.name "your-username"
+          git add update.txt
+          git commit -m "Daily update: $(date)"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
