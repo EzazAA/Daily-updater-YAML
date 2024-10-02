@@ -15,8 +15,8 @@ jobs:
 
     - name: Set up Git
       run: |
-        git config --global user.email "ezazalamahmed@gmail.com"
-        git config --global user.name "EzazAA"
+        git config --global user.email "ezazalamahmed@gmail.com"  # Your email
+        git config --global user.name "EzazAA"                    # Your GitHub username
 
     - name: Pull changes from remote
       run: git pull --rebase origin main
@@ -31,4 +31,4 @@ jobs:
           echo "No changes to commit."
         fi
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Token to authenticate the push
