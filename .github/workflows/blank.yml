@@ -3,6 +3,7 @@ name: Update Workflow
 on:
   schedule:
     - cron: '30 4 * * *' # Runs daily at 04:30 UTC (10:00 AM IST)
+  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
   update:
@@ -18,12 +19,16 @@ jobs:
         git config --global user.name "EzazAA"
 
     - name: Pull changes from remote
-      run: git pull origin main
+      run: git pull --rebase origin main
 
     - name: Commit and push changes
       run: |
         git add update.txt
-        git commit -m "Daily update: $(date)"
-        git push
+        if [ -n "$(git status --porcelain)" ]; then
+          git commit -m "Daily update: $(date)"
+          git push
+        else
+          echo "No changes to commit."
+        fi
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
